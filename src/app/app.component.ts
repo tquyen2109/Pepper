@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {AngularFireDatabase,AFireList} from '@angular/fire/database';
+import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-root',
@@ -8,17 +8,21 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
   title = 'pepper';
-  cuisines: Observable<any[]> ;
+  cuisines: AngularFireList<any[]> ;
   restaurant;
   constructor(private af: AngularFireDatabase) {
     
+    }
     
-  }
+  
   ngOnInit(){
-    this.cuisines = this.af.list('cuisines').valueChanges();
+    this.af.list('/cuisines').valueChanges().subscribe((cuisines:any)=>{
+      this.cuisines = cuisines;
+    });
     this.restaurant = this.af.object('/restaurant').valueChanges();
   }
  add(){
-   this.cuisines.
+   this.af.list('/cuisines').push('Asian');
  }
+
 }
